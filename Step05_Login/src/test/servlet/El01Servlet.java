@@ -16,8 +16,6 @@ public class El01Servlet extends HttpServlet {
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.service(req, resp);
 	
 		// request 영역에 "myName" 이라는 키값으로 "김구라" 저장하기
 		req.setAttribute("myName", "김구라");

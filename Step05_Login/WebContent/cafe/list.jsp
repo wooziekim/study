@@ -2,7 +2,8 @@
 <%@page import="test.cafe.dto.CafeDto"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +12,7 @@
 <jsp:include page="../include/resource.jsp"></jsp:include>
 </head>
 <body>
-<%
+	<%
 	//한 페이지에 나타낼 row 의 갯수
 	final int PAGE_ROW_COUNT=5;
 	//하단 디스플레이 페이지 갯수
@@ -52,85 +53,91 @@
 	//1. DB 에서 글 목록을 얻어온다.
 	List<CafeDto> list=CafeDao.getInstance().getList(dto);
 	//2. 글 목록을 응답한다.
+	
+	// EL, JSTL 을 활용하기 위해 필요한 모델을 request에 담는다.
+	request.setAttribute("list", list);
+	request.setAttribute("pageNum", pageNum);
+	request.setAttribute("startPageNum", startPageNum);
+	request.setAttribute("endPageNum", endPageNum);
+	request.setAttribute("totalPageCount", totalPageCount);
+	
 %>
-<jsp:include page="../include/navbar.jsp">
-	<jsp:param value="cafe" name="category"/>
-</jsp:include>
-<div class="container">
-	<ol class="breadcrumb">
-		<li><a href="${pageContext.request.contextPath }/cafe/list.jsp">목록</a></li>
-	</ol>
-	<h1>글 목록 입니다.</h1>
-	<table class="table table-striped table-condensed">
-		<colgroup>
-			<col class="col-xs-1"/>
-			<col class="col-xs-2"/>
-			<col class="col-xs-5"/>
-			<col class="col-xs-1"/>
-			<col class="col-xs-3"/>
-		</colgroup>
-		<thead>
-			<tr>
-				<th>글번호</th>
-				<th>작성자</th>
-				<th>제목</th>
-				<th>조회수</th>
-				<th>등록일</th>
-			</tr>
-		</thead>
-		<tbody>
-		<%for(CafeDto tmp:list){ %>
-			<tr>
-				<td><%=tmp.getNum() %></td>
-				<td><%=tmp.getWriter() %></td>
-				<td>
-					<a href="detail.jsp?num=<%=tmp.getNum() %>">
-						<%=tmp.getTitle() %>
-					</a>
-				</td>
-				<td><%=tmp.getViewCount() %></td>
-				<td><%=tmp.getRegdate() %></td>
-			</tr>
-		<%} %>
-		</tbody>
-	</table>
-	
-	<a href="private/insertform.jsp">새글 작성</a>
-	
-	<div class="page-display">
-		<ul class="pagination pagination-sm">
-			<%if(startPageNum != 1){ %>
-				<li>
-					<a href="list.jsp?pageNum=<%=startPageNum-1 %>">&laquo;</a>
-				</li>
-			<%}else{ %>
-				<li class="disabled">
-					<a href="javascript:">&laquo;</a>
-				</li>
-			<%} %>
-			<%for(int i=startPageNum; i<=endPageNum; i++){ %>
-				<%if(i == pageNum){ %>
-					<li class="active">
-						<a href="list.jsp?pageNum=<%=i %>"><%=i %></a>
-					</li>
-				<%}else{ %>
-					<li>
-						<a href="list.jsp?pageNum=<%=i %>"><%=i %></a>
-					</li>
-				<%} %>
-			<%} %>
-			<%if(endPageNum < totalPageCount){ %>
-				<li>
-					<a href="list.jsp?pageNum=<%=endPageNum+1 %>">&raquo;</a>
-				</li>
-			<%}else{ %>
-				<li class="disabled">
-					<a href="javascript:">&raquo;</a>
-				</li>
-			<%} %>
-		</ul>
+	<jsp:include page="../include/navbar.jsp">
+		<jsp:param value="cafe" name="category" />
+	</jsp:include>
+	<div class="container">
+		<ol class="breadcrumb">
+			<li><a href="${pageContext.request.contextPath }/cafe/list.jsp">목록</a></li>
+		</ol>
+		<h1>글 목록 입니다.</h1>
+		<table class="table table-striped table-condensed">
+			<colgroup>
+				<col class="col-xs-1" />
+				<col class="col-xs-2" />
+				<col class="col-xs-5" />
+				<col class="col-xs-1" />
+				<col class="col-xs-3" />
+			</colgroup>
+			<thead>
+				<tr>
+					<th>글번호</th>
+					<th>작성자</th>
+					<th>제목</th>
+					<th>조회수</th>
+					<th>등록일</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach var="tmp" items="${requestScope.list }">
+					<tr>
+						<td>${tmp.num}</td>
+						<td>${tmp.writer}</td>
+						<td><a href="detail.jsp?num=${tmp.num } %>"> ${tmp.title }
+						</a></td>
+						<td>${tmp.viewCount }</td>
+						<td>${tmp.regdate }</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+
+		<a href="private/insertform.jsp">새글 작성</a>
+
+		<div class="page-display">
+			<ul class="pagination pagination-sm">
+			
+			<c:choose>
+			<c:when test="${startPageNum ne 1 }">
+				<li><a href="list.jsp?pageNum=${startPageNum-1 }"></a>&laquo;</li>
+			</c:when>
+			<c:otherwise>
+				<li class="disabled"><a href="javascript:">&laquo;</a></li>
+			</c:otherwise>
+			</c:choose>
+		<c:forEach var="i" begin="${startPageNum }" end="${endPageNum }" step="1">
+			<c:choose>
+			<c:when test="${pageNum eq i }">
+			<li class="active"><a href="list.jsp?pageNum=${i }">${i }</a></li>
+			</c:when>
+			<c:otherwise>
+				<li><a href="list.jsp?pageNum=${i }">${i }</a></li>
+			</c:otherwise>
+			</c:choose>
+			<c:choose>
+			<c:when test="${endPageNum lt totalPageCount }">
+			<li><a href="list.jsp?pageNum=${endPageNum+1 }">&raquo;</a></li>
+			</c:when>
+			</c:choose>		
+			<c:choose>
+				<c:when test="list.jsp?pageNum=${endPageNum+1 }">&raquo;</c:when>
+			<c:otherwise>
+				<li class="disabled"><a href="javascript:">&raquo;</a></li>
+			</c:otherwise>
+			</c:choose>
+		</c:forEach>
+			</ul>
 	</div>
-</div>
+</div>	
 </body>
 </html>
 

@@ -1,7 +1,8 @@
 <%@page import="test.cafe.dao.CafeDao"%>
 <%@page import="test.cafe.dto.CafeDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
 	//1. GET 방식 파라미터로 전달되는 글번호를 읽어온다.
 	int num=Integer.parseInt(request.getParameter("num"));

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <%
 	//session 에서 "id" 라는 키값으로 저장된 문자열이 있는지 읽어와 본다.
 	// 있으면 로그인 된 상태, null 이면 로그인이 안된 상태 
@@ -30,6 +31,10 @@
 		<li><a href="el01">EL 테스트</a></li>
 		<li><a href="el02">EL 테스트2</a></li>
 		<li><a href="el03">EL 테스트3</a></li>
+		<li><a href="el/test04.jsp">EL 테스트4</a></li>
+		<li><a href="jstl/test01.jsp">JSTL 테스트</a></li>
+		<li><a href="jstl/test02/jsp">JSTL 테스트2</a></li>
+		<li><a href="jstl/test03.jsp">JSTL 테스트3</a></li>
 	</ul>
 </div>
 </body>

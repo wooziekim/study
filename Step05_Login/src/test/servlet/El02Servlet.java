@@ -18,9 +18,6 @@ public class El02Servlet extends HttpServlet{
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.service(req, resp);
-	
 		UsersDto dto=new UsersDto();
 		dto.setId("kimgura");
 		dto.setEmail("aaa@naver.com");

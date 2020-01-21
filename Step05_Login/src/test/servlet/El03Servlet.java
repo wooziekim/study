@@ -14,8 +14,6 @@ public class El03Servlet extends HttpServlet {
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.service(req, resp);
 		HttpSession session=req.getSession();
 		session.setAttribute("myNick","호빵맨");
 		// jsp 페이지로 리다일렉트 이동하기
