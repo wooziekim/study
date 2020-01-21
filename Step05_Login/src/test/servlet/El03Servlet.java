@@ -2,29 +2,25 @@ package test.servlet;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-@WebServlet("/el01")
-public class El01Servlet extends HttpServlet {
+@WebServlet("/el03")
+public class El03Servlet extends HttpServlet {
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		super.service(req, resp);
-	
-		// request 영역에 "myName" 이라는 키값으로 "김구라" 저장하기
-		req.setAttribute("myName", "김구라");
-		// jsp 페이지로 forward 이동 (응답을 위임하기)
-		RequestDispatcher rd=req.getRequestDispatcher("/el/test01.jsp");
-		rd.forward(req,resp);
-		
+		HttpSession session=req.getSession();
+		session.setAttribute("myNick","호빵맨");
+		// jsp 페이지로 리다일렉트 이동하기
+		String cPath=req.getContextPath();
+		resp.sendRedirect(cPath+ "/el/test03.jsp");
 	}
 	
 }
